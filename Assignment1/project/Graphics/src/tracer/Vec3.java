@@ -47,8 +47,10 @@ public class Vec3 {
 	 * Vector addition. Returns a new Vec3 equal to this + that.
 	 */
 	public Vec3 add( Vec3 that ) {
-		// replace the line below by meaningful code
-		return new Vec3();	
+		return new Vec3( x + that.x
+		               , y + that.y
+		               , z + that.z
+		               );
 	}
 	/**
 	 * Multiplication by a scalar. Returns a new Vec3 equals to f * this.
@@ -85,23 +87,32 @@ public class Vec3 {
 	 * @see length
 	 **/
 	public float lengthSquared() {
-		// replace the line below by meaningful code
-		return 0;
+                float lengthS;
+                lengthS = (float)Math.pow(x, 2) + (float)Math.pow(y, 2) + (float)Math.pow(z, 2);
+		return lengthS;
 	}
 	
 	/**
 	 * Vector dot-product. Returns a new Vec3 equal to this dot that.
 	 */
 	public float dot( Vec3 that ) {
-		// replace the line below by meaningful code
-		return 0;
+		float value;
+                value = this.x * that.x + this.y * that.y + this.z * that.z;
+		return value;
 	}
 	/**
 	 * Vector cross-product. Returns a new Vec3 equal to this cross that.
 	 */
 	public Vec3 cross( Vec3 b ) {
-		// replace the line below by meaningful code
-		return new Vec3();	
+		float newX;
+                float newY;
+                float newZ;
+
+                newX = (this.y * b.z) - (this.z * b.y);
+                newY = (this.z * b.x) - (this.x * b.z);
+                newZ = (this.x * b.y) - (this.y + b.x);
+
+		return new Vec3(newX, newY, newZ);
 	}
 	
 	/**
