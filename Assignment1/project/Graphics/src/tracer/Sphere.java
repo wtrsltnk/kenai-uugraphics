@@ -43,10 +43,43 @@ public class Sphere extends Traceable {
 		// of this intersection point to the origin of the ray. Initially, you may put a zero normal vector
 		// in the IntersectionInfo, but as soon as we compute the local lighting model, you have to compute
 		// a proper normal vector of the sphere at the intersection point. 
-		
+
+            float A = r.direction.dot(r.direction);
+            float B = r.direction.times(2).dot(r.origin.minus(this.origin));
+            float C = r.origin.minus(this.origin).dot(r.origin.minus(this.origin)) - (this.radius * this.radius);
+
+            float D = (B * B) - 4 * A * C;
+
+            if (D < 0) {
+                // No solution
 		
 		// For now, simply return "no hit". Replace the line below by meaningful code
 		return new IntersectionInfo(false);
+            }
+            else if (D == 0) {
+                // One solution
+
+		// For now, simply return "no hit". Replace the line below by meaningful code
+		return new IntersectionInfo(false);
+            }
+            else {
+                // Two solutions
+
+                Vec3 location = new Vec3();
+                Vec3 normal = new Vec3();
+
+                float tPlus = (float)((-B + Math.sqrt(D)) / (2 * A));
+                float tMin = (float)((-B - Math.sqrt(D)) / (2 * A));
+
+                float distance = Math.min(tPlus, tMin);
+
+                location = r.origin.add(r.direction.times(distance));
+                normal = location.minus(this.origin);
+                normal.normalize();
+
+		// For now, simply return "no hit". Replace the line below by meaningful code
+		return new IntersectionInfo(location, normal, distance, this);
+            }
 	}
 	
 	public boolean hit( Ray r ) {
