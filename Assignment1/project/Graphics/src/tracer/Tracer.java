@@ -132,6 +132,10 @@ public class Tracer extends Frame {
 		// compute a ray from the origin of the camera through the center of pixel (x,y)
 		// replace the line below by meaningful code
 		Vec3 direction = new Vec3();
+
+                direction.x = (float)(camera.left + (camera.right - camera.left) * ((x + 0.5) / camera.near));
+                direction.y = (float)(camera.bottom + (camera.top - camera.bottom) * ((y + 0.5) / camera.near));
+
 		Ray r = new Ray( camera.origin, direction );
 		return r.trace( null, maxReflectionDepth );
 		
