@@ -23,7 +23,17 @@ public class Ray {
 	public Vec3 localLight( IntersectionInfo info, Light light ) {
 		// diffuse component
 		// replace the line below by meaningful code
-		Vec3 diffuse = new Vec3();
+		Vec3 diffuse = light.color;
+
+                // Calculate the Light direction vector
+                Vec3 l = light.location.minus(info.location);
+                l.normalize();
+
+                // Calculate the intensity
+                float c = info.object.material.diffuse * light.intensity * Math.abs(info.normal.dot(l));
+
+                // Set the intensity to the light source color
+                diffuse = diffuse.times(c);
 		
 		// specular (a.k.a. glossy) reflection
 		// replace the line below by meaningful code
@@ -94,6 +104,15 @@ public class Ray {
 	 *    @see trace.
 	 */
 	public boolean hit( Traceable ignoreObject ) {
+		Iterator i = Tracer.scene.iterator();
+		while( i.hasNext() ) {
+			Traceable t = (Traceable)i.next();
+			if( t != ignoreObject ) {
+				if (t.hit(this)) {
+                                    return true;
+                                }
+			}
+                }
 		// replace the line below by meaningful code
 		return false;
 	}

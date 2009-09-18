@@ -40,13 +40,24 @@ public class Plane extends Traceable {
 	}
 	
 	public IntersectionInfo intersect( Ray r ) {
-		// replace this by meaningfull code
-		return new IntersectionInfo(false);
+
+            Vec3 p1 = this.normal.times(-this.offset);
+            float t = (p1.minus(r.origin)).dot(this.normal) / r.direction.dot(this.normal);
+
+            if (t >= 0)
+            {
+                return new IntersectionInfo(r.origin.add(r.direction.times(t)), normal, t, this);
+            }
+            // replace this by meaningfull code
+            return new IntersectionInfo(false);
 	}
 	
 	public boolean hit( Ray r ) {
-		// replace this by meaningfull code.
-		return false;
+            Vec3 p1 = this.normal.times(this.offset);
+            float t = (p1.minus(r.origin)).dot(this.normal) / r.direction.dot(this.normal);
+
+            // replace this by meaningfull code.
+            return false;//(t >= 0);
 		
 	}
 	

@@ -77,14 +77,18 @@ public class Sphere extends Traceable {
                 normal = location.minus(this.origin);
                 normal.normalize();
 
-		// For now, simply return "no hit". Replace the line below by meaningful code
 		return new IntersectionInfo(location, normal, distance, this);
             }
 	}
 	
 	public boolean hit( Ray r ) {
-		// replace the line below by meaningful code
-		return false;	
+            float A = r.direction.dot(r.direction);
+            float B = r.direction.times(2).dot(r.origin.minus(this.origin));
+            float C = r.origin.minus(this.origin).dot(r.origin.minus(this.origin)) - (this.radius * this.radius);
+
+            float D = (B * B) - 4 * A * C;
+            
+            return (D > 0);
 	}
 	
 }
