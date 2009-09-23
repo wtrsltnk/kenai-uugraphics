@@ -133,8 +133,8 @@ public class Tracer extends Frame {
 		// replace the line below by meaningful code
 		Vec3 direction = new Vec3();
 
-                direction.x = (float)(camera.left + (camera.right - camera.left) * ((x + 0.5) / 400));
-                direction.y = (float)(camera.bottom + (camera.top - camera.bottom) * ((y + 0.5) / 400));
+                direction.x = (float)(camera.left + (camera.right - camera.left) * ((x + 0.5) / Tracer.width));
+                direction.y = (float)(camera.bottom + (camera.top - camera.bottom) * ((y + 0.5) / Tracer.height));
                 direction.z = camera.near;
 
 		Ray r = new Ray( camera.origin, direction );

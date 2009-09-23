@@ -14,16 +14,16 @@ public class ToneMapper {
 	
 	public int map( float r, float g, float b ) {
 		
-            // apply gamma correction
+            // TODO: apply gamma correction
 
-//            r = (float)Math.pow(r, invGamma);
-//            g = (float)Math.pow(g, invGamma);
-//            b = (float)Math.pow(b, invGamma);
+            r = (float)Math.pow(r, invGamma);
+            g = (float)Math.pow(g, invGamma);
+            b = (float)Math.pow(b, invGamma);
 
             float max = Math.max(Math.max(r, g), b);
-            r /= 1.5;
-            g /= 1.5;
-            b /= 1.5;
+            r = r / (r + 1);
+            g = g / (g + 1);
+            b = b / (b + 1);
             // add code for color clamping below this line
 
             // convert to int

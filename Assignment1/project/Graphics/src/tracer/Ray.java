@@ -23,22 +23,30 @@ public class Ray {
 	public Vec3 localLight( IntersectionInfo info, Light light ) {
 		// diffuse component
 		// replace the line below by meaningful code
-		Vec3 diffuse = light.color;
+		Vec3 diffuse = info.object.material.color;
 
                 // Calculate the Light direction vector
                 Vec3 l = light.location.minus(info.location);
                 l.normalize();
 
+                Vec3 e = this.direction;
+                Vec3 eplusl = e.add(l);
+                Vec3 h = eplusl.times(1/eplusl.length());
+                
                 // Calculate the intensity
-                float c = info.object.material.diffuse * light.intensity * Math.abs(info.normal.dot(l));
+//                float c = info.object.material.diffuse * light.intensity * Math.abs(info.normal.dot(l));
+                float cDiffuse = (float) info.object.material.diffuse * (info.object.material.ambient + light.intensity * Math.abs(info.normal.dot(l)));
 
                 // Set the intensity to the light source color
-                diffuse = diffuse.times(c);
+                diffuse = diffuse.times(cDiffuse);
 		
 		// specular (a.k.a. glossy) reflection
 		// replace the line below by meaningful code
-		Vec3 specular = new Vec3();
-		
+		Vec3 specular = light.color;
+                float cPhong = (float) (light.intensity * info.object.material.specular * Math.pow((h.dot(info.normal)), info.object.material.specularPower));
+
+                specular = specular.times(cPhong);
+                
 		return diffuse.add( specular );
 	}
 	

@@ -58,13 +58,19 @@ public class Sphere extends Traceable {
             }
             else if (D == 0) {
                 // One solution
+                Vec3 location = new Vec3();
+                Vec3 normal = new Vec3();
 
-		// For now, simply return "no hit". Replace the line below by meaningful code
-		return new IntersectionInfo(false);
+                float distance = (float)((-B + Math.sqrt(D)) / (2 * A));
+
+                location = r.origin.add(r.direction.times(distance));
+                normal = location.minus(this.origin);
+                normal.normalize();
+
+		return new IntersectionInfo(location, normal, distance, this);
             }
             else {
                 // Two solutions
-
                 Vec3 location = new Vec3();
                 Vec3 normal = new Vec3();
 
@@ -87,8 +93,9 @@ public class Sphere extends Traceable {
             float C = r.origin.minus(this.origin).dot(r.origin.minus(this.origin)) - (this.radius * this.radius);
 
             float D = (B * B) - 4 * A * C;
-            
-            return (D > 0);
+
+            float distance = (float)((-B + Math.sqrt(D)) / (2 * A));
+            return (D > 0 && distance >= 0 && distance <= 1);
 	}
 	
 }
