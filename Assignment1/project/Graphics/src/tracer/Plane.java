@@ -57,7 +57,8 @@ public class Plane extends Traceable {
             float t = (p1.minus(r.origin)).dot(this.normal) / r.direction.dot(this.normal);
 
             // replace this by meaningfull code.
-            return false;//(t >= 0);
+            // TODO: zorg dat de planes ook schaduws casten
+            return false;//(t >= 0 && t <= 1);
 		
 	}
 	

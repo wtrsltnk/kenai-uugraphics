@@ -29,7 +29,8 @@ public class Ray {
                 Vec3 l = light.location.minus(info.location);
                 l.normalize();
 
-                Vec3 e = this.direction;
+                //Vec3 e = this.direction;
+                Vec3 e = this.origin.minus(info.location);
                 Vec3 eplusl = e.add(l);
                 Vec3 h = eplusl.times(1/eplusl.length());
                 
