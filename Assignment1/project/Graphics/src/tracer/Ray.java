@@ -23,31 +23,26 @@ public class Ray {
 	public Vec3 localLight( IntersectionInfo info, Light light ) {
 		// diffuse component
 		// replace the line below by meaningful code
-		Vec3 diffuse = info.object.material.color;
 
                 // Calculate the Light direction vector
                 Vec3 l = light.location.minus(info.location);
                 l.normalize();
 
-                //Vec3 e = this.direction;
-                Vec3 e = this.origin.minus(info.location);
+                float ndotl = Math.max(0, info.normal.dot(l));
+                Vec3 cr = info.object.material.color;//.times(info.object.material.diffuse);
+                Vec3 cl = light.color.times(light.intensity);
+
+                // Diffuse calculation
+                Vec3 diffuse = cr.times(cl).times(ndotl);
+
+                Vec3 e = this.direction.times(-1);
                 Vec3 eplusl = e.add(l);
                 Vec3 h = eplusl.times(1/eplusl.length());
+                float hdotn = h.dot(info.normal);
                 
-                // Calculate the intensity
-//                float c = info.object.material.diffuse * light.intensity * Math.abs(info.normal.dot(l));
-                float cDiffuse = (float) info.object.material.diffuse * (info.object.material.ambient + light.intensity * Math.abs(info.normal.dot(l)));
+                // Specular calculation
+                Vec3 specular = cl.times((float)Math.pow(hdotn, info.object.material.specularPower)).times(info.object.material.specular);
 
-                // Set the intensity to the light source color
-                diffuse = diffuse.times(cDiffuse);
-		
-		// specular (a.k.a. glossy) reflection
-		// replace the line below by meaningful code
-		Vec3 specular = light.color;
-                float cPhong = (float) (light.intensity * info.object.material.specular * Math.pow((h.dot(info.normal)), info.object.material.specularPower));
-
-                specular = specular.times(cPhong);
-                
 		return diffuse.add( specular );
 	}
 	
@@ -95,6 +90,19 @@ public class Ray {
 			}
 			
 			// global illumination: add recursively computed reflection below this line
+                        if (maxReflectionsLeft > 0) {
+                            Vec3 e = this.direction;
+                            e.normalize();
+                            Vec3 n = nearestHit.normal;
+                            n.normalize();
+                            Vec3 r = e.add(n.times(2 * e.dot(n)));
+
+                            Ray ray = new Ray(nearestHit.location, r);
+
+                            Vec3 reflectionColor = ray.trace(nearestHit.object, maxReflectionsLeft - 1);
+
+                            color.add(reflectionColor.times(nearestHit.object.material.reflectance));
+                        }
 			
 			
 			return color;

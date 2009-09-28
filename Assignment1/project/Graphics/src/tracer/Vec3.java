@@ -87,32 +87,27 @@ public class Vec3 {
 	 * @see length
 	 **/
 	public float lengthSquared() {
-                float lengthS;
-                lengthS = (float)Math.pow(x, 2) + (float)Math.pow(y, 2) + (float)Math.pow(z, 2);
-		return lengthS;
+//                float lengthS;
+//                lengthS = (float)Math.pow(x, 2) + (float)Math.pow(y, 2) + (float)Math.pow(z, 2);
+//		return lengthS;
+            return (x * x) + (y * y) + (z * z);
 	}
 	
 	/**
 	 * Vector dot-product. Returns a new Vec3 equal to this dot that.
 	 */
 	public float dot( Vec3 that ) {
-		float value;
-                value = this.x * that.x + this.y * that.y + this.z * that.z;
-		return value;
+                return (this.x * that.x) + (this.y * that.y) + (this.z * that.z);
 	}
 	/**
 	 * Vector cross-product. Returns a new Vec3 equal to this cross that.
 	 */
 	public Vec3 cross( Vec3 b ) {
-		float newX;
-                float newY;
-                float newZ;
-
-                newX = (this.y * b.z) - (this.z * b.y);
-                newY = (this.z * b.x) - (this.x * b.z);
-                newZ = (this.x * b.y) - (this.y + b.x);
-
-		return new Vec3(newX, newY, newZ);
+		return new Vec3(
+                        (this.y * b.z) - (this.z * b.y),
+                        (this.z * b.x) - (this.x * b.z),
+                        (this.x * b.y) - (this.y + b.x)
+                        );
 	}
 	
 	/**
