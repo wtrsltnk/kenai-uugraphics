@@ -5,8 +5,8 @@
  */
 
 // some settings
-width	400
-height	400
+width	800
+height	800
 maxReflectionDepth 4
 gamma 1.0
 

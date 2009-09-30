@@ -16,9 +16,9 @@ public class ToneMapper {
 		
             // TODO: apply gamma correction
 
-//            r = (float)Math.pow(r, invGamma);
-//            g = (float)Math.pow(g, invGamma);
-//            b = (float)Math.pow(b, invGamma);
+            r = (float)Math.pow(r, invGamma);
+            g = (float)Math.pow(g, invGamma);
+            b = (float)Math.pow(b, invGamma);
 
 //            float max = Math.max(Math.max(r, g), b);
 //            r = r / (r + 1);

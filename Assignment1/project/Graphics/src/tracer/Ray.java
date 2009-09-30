@@ -29,19 +29,22 @@ public class Ray {
                 l.normalize();
 
                 float ndotl = Math.max(0, info.normal.dot(l));
-                Vec3 cr = info.object.material.color;//.times(info.object.material.diffuse);
+                Vec3 cr = info.object.material.color.times(info.object.material.diffuse);
                 Vec3 cl = light.color.times(light.intensity);
 
                 // Diffuse calculation
                 Vec3 diffuse = cr.times(cl).times(ndotl);
 
                 Vec3 e = this.direction.times(-1);
+                e.normalize();
                 Vec3 eplusl = e.add(l);
-                Vec3 h = eplusl.times(1/eplusl.length());
+                Vec3 h = eplusl;//.times(1/eplusl.length());
+                h.normalize();
                 float hdotn = h.dot(info.normal);
-                
+
+                float hdotnpow = (float)Math.pow(hdotn, info.object.material.specularPower);
                 // Specular calculation
-                Vec3 specular = cl.times((float)Math.pow(hdotn, info.object.material.specularPower)).times(info.object.material.specular);
+                Vec3 specular = cl.times(hdotnpow).times(info.object.material.specular);
 
 		return diffuse.add( specular );
 	}
