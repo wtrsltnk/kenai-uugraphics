@@ -95,13 +95,13 @@ public class Ray {
                             e.normalize();
                             Vec3 n = nearestHit.normal;
                             n.normalize();
-                            Vec3 r = e.add(n.times(2 * e.dot(n)));
+                            Vec3 r = e.add(n.times(e.times(-1).dot(n)).times(2));
 
                             Ray ray = new Ray(nearestHit.location, r);
 
                             Vec3 reflectionColor = ray.trace(nearestHit.object, maxReflectionsLeft - 1);
 
-                            color.add(reflectionColor.times(nearestHit.object.material.reflectance));
+                            return color.add(reflectionColor.times(nearestHit.object.material.reflectance));
                         }
 			
 			

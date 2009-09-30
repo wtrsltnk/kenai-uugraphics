@@ -5,8 +5,8 @@
  */
 
 // some settings
-width	400
-height	400
+width	800
+height	800
 maxReflectionDepth 4
 gamma 1.0
 
@@ -69,7 +69,7 @@ sphere {
 		color < 1, 1, 1 >
 		ambient 0
 		diffuse 0.4
-		specular 1
+		specular 0.1
 		reflectance 0.8
 	}
 
