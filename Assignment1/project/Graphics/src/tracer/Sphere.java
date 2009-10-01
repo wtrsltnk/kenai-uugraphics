@@ -38,76 +38,77 @@ public class Sphere extends Traceable {
 	}
 	
 	public IntersectionInfo intersect( Ray r ) {
-		// delete the line of code below, and properly compute if the Ray r hits the Spere, and if so, 
-		// record the nearest intersection point in the IntersectionInfo record, as well as the distance
-		// of this intersection point to the origin of the ray. Initially, you may put a zero normal vector
-		// in the IntersectionInfo, but as soon as we compute the local lighting model, you have to compute
-		// a proper normal vector of the sphere at the intersection point. 
+                // Impementation of the ABC formula
+                float A = r.direction.dot(r.direction);
+                float B = r.direction.times(2).dot(r.origin.minus(this.origin));
+                float C = r.origin.minus(this.origin).dot(r.origin.minus(this.origin)) - (this.radius * this.radius);
 
-            // impementation of the ABC formula
-            float A = r.direction.dot(r.direction);
-            float B = r.direction.times(2).dot(r.origin.minus(this.origin));
-            float C = r.origin.minus(this.origin).dot(r.origin.minus(this.origin)) - (this.radius * this.radius);
+                float D = (B * B) - 4 * A * C;
 
-            float D = (B * B) - 4 * A * C;
-
-            // If the discriminant < 0 there is nor intersection
-            if (D < 0) {
-		return new IntersectionInfo(false);
-            }
-            // If the discrimant = 0 there is one solotion
-            else if (D == 0) {
-                // One solution
-                Vec3 location = new Vec3();
-                Vec3 normal = new Vec3();
-
-                float distance = (float)((-B - Math.sqrt(D)) / (2 * A));
-
-                location = r.origin.add(r.direction.times(distance));
-                normal = location.minus(this.origin);
-                normal.normalize();
-
-                if (distance >= 0){
-		return new IntersectionInfo(location, normal, distance, this);
+                // If the discriminant < 0 there is no intersection
+                if (D < 0) {
+                        return new IntersectionInfo(false);
                 }
-                else{
-                 return new IntersectionInfo(false);
+                // If the discrimant = 0 there is one solotion
+                else if (D == 0) {
+                        Vec3 location = new Vec3();
+                        Vec3 normal = new Vec3();
+
+                        // Calculate the nearest hit
+                        float distance = (float)((-B - Math.sqrt(D)) / (2 * A));
+
+                        // Calulate the location and normal from the distance
+                        location = r.origin.add(r.direction.times(distance));
+                        normal = location.minus(this.origin);
+                        normal.normalize();
+
+                        // Make sure we only look in the positive direction of the ray, otherwise there will be weird artifacts visible
+                        if (distance >= 0) {
+                                return new IntersectionInfo(location, normal, distance, this);
+                        }
+                        else{
+                                return new IntersectionInfo(false);
+                        }
                 }
-                //return new IntersectionInfo(false);
-            }
-            // If the discrimant > 0 there are two solotion
-            else {
-                // Two solutions
-                Vec3 location = new Vec3();
-                Vec3 normal = new Vec3();
+                // If the discrimant > 0 there are two solotion
+                else {
+                        Vec3 location = new Vec3();
+                        Vec3 normal = new Vec3();
 
-                float tPlus = (float)((-B + Math.sqrt(D)) / (2 * A));
-                float tMin = (float)((-B - Math.sqrt(D)) / (2 * A));
+                        // Calulate both hits
+                        float tPlus = (float)((-B + Math.sqrt(D)) / (2 * A));
+                        float tMin = (float)((-B - Math.sqrt(D)) / (2 * A));
 
-                float distance = Math.min(tPlus, tMin);
+                        // Use the nearest hit
+                        float distance = Math.min(tPlus, tMin);
 
-                location = r.origin.add(r.direction.times(distance));
-                normal = location.minus(this.origin);
-                normal.normalize();
+                        // Calulate the location and normal from the distance
+                        location = r.origin.add(r.direction.times(distance));
+                        normal = location.minus(this.origin);
+                        normal.normalize();
 
-                if (distance >= 0){
-		return new IntersectionInfo(location, normal, distance, this);
+                        // Make sure we only look in the positive direction of the ray, otherwise there will be weird artifacts visible
+                        if (distance >= 0) {
+                                return new IntersectionInfo(location, normal, distance, this);
+                        }
+                        else{
+                                return new IntersectionInfo(false);
+                        }
                 }
-                else{
-                 return new IntersectionInfo(false);
-                }
-            }
 	}
 	
 	public boolean hit( Ray r ) {
-            float A = r.direction.dot(r.direction);
-            float B = r.direction.times(2).dot(r.origin.minus(this.origin));
-            float C = r.origin.minus(this.origin).dot(r.origin.minus(this.origin)) - (this.radius * this.radius);
+                // Impementation of the ABC formula
+                float A = r.direction.dot(r.direction);
+                float B = r.direction.times(2).dot(r.origin.minus(this.origin));
+                float C = r.origin.minus(this.origin).dot(r.origin.minus(this.origin)) - (this.radius * this.radius);
 
-            float D = (B * B) - 4 * A * C;
+                float D = (B * B) - 4 * A * C;
 
-            float distance = (float)((-B + Math.sqrt(D)) / (2 * A));
-            return (D > 0 && distance >= 0 && distance <= 1);
+                float distance = (float)((-B + Math.sqrt(D)) / (2 * A));
+
+                // When there is an intersection, and the distance of this intersection is between 1 and 0, there is a hit
+                return (D > 0 && distance >= 0 && distance <= 1);
 	}
 	
 }

@@ -21,31 +21,39 @@ public class Ray {
 	 * using a shadow feeler).
 	 */
 	public Vec3 localLight( IntersectionInfo info, Light light ) {
-		// diffuse component
-		// replace the line below by meaningful code
-
+            // diffuse component
                 // Calculate the Light direction vector
                 Vec3 l = light.location.minus(info.location);
                 l.normalize();
 
+                // Calculate the dotproduct of the intersectino normal and teh light
                 float ndotl = Math.max(0, info.normal.dot(l));
+                // Calculate the intensity of the material color as diffuse light
                 Vec3 cr = info.object.material.color.times(info.object.material.diffuse);
+                // Calculate the intensity of the light color
                 Vec3 cl = light.color.times(light.intensity);
 
-                // Diffuse calculation
+                // Final diffuse color calculation
                 Vec3 diffuse = cr.times(cl).times(ndotl);
 
+            // specular component
+                // Calulate and normalize the direction in which the camera looks at the intersection
                 Vec3 e = this.direction.times(-1);
                 e.normalize();
-                Vec3 eplusl = e.add(l);
-                Vec3 h = eplusl;//.times(1/eplusl.length());
+
+                // Calulate the vecor between e and l and normalize it
+                Vec3 h = e.add(l);
                 h.normalize();
+
+                // Calculate the dotproduct to determine how far h is from the normal
                 float hdotn = h.dot(info.normal);
 
+                // Use specular power to set the intensity of specular effect
                 float hdotnpow = (float)Math.pow(hdotn, info.object.material.specularPower);
-                // Specular calculation
+                // Final specular color calculation
                 Vec3 specular = cl.times(hdotnpow).times(info.object.material.specular);
 
+                // Add the specular to the diffuse color
 		return diffuse.add( specular );
 	}
 	
@@ -92,19 +100,23 @@ public class Ray {
 				}
 			}
 			
-			// global illumination: add recursively computed reflection below this line
+			// global illumination
                         if (maxReflectionsLeft > 0) {
-                            Vec3 e = this.direction;
-                            e.normalize();
-                            Vec3 n = nearestHit.normal;
-                            n.normalize();
-                            Vec3 r = e.add(n.times(e.times(-1).dot(n)).times(2));
+                                // Direction in which the current trace is tracing
+                                Vec3 e = this.direction;
+                                e.normalize();
+                                // The normal of the nearest hit of the current trace
+                                Vec3 n = nearestHit.normal;
+                                n.normalize();
 
-                            Ray ray = new Ray(nearestHit.location, r);
+                                // Calulate the ray for tracing the reflectance
+                                Ray ray = new Ray(nearestHit.location, e.add(n.times(e.times(-1).dot(n)).times(2)));
 
-                            Vec3 reflectionColor = ray.trace(nearestHit.object, maxReflectionsLeft - 1);
+                                // Trace the reflection ray were for every reflectance the number of maxReflectionsLeft is lowered with 1
+                                Vec3 reflectionColor = ray.trace(nearestHit.object, maxReflectionsLeft - 1);
 
-                            return color.add(reflectionColor.times(nearestHit.object.material.reflectance));
+                                // Add the color from tracing the reflection ray and multiply it with the materials reflectance setting
+                                return color.add(reflectionColor.times(nearestHit.object.material.reflectance));
                         }
 			
 			

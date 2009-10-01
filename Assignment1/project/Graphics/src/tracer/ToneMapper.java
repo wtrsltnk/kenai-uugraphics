@@ -13,59 +13,29 @@ public class ToneMapper {
 	public float invGamma;
 	
 	public int map( float r, float g, float b ) {
-		
-            // TODO: apply gamma correction
+                // Apply gamma correction
+                r = (float)Math.pow(r, invGamma);
+                g = (float)Math.pow(g, invGamma);
+                b = (float)Math.pow(b, invGamma);
 
-            r = (float)Math.pow(r, invGamma);
-            g = (float)Math.pow(g, invGamma);
-            b = (float)Math.pow(b, invGamma);
+                // Clamp values lower than 0 to 0
+                if (r < 0) r = 0;
+                if (g < 0) g = 0;
+                if (b < 0) b = 0;
 
-//            float max = Math.max(Math.max(r, g), b);
-//            r = r / (r + 1);
-//            g = g / (g + 1);
-//            b = b / (b + 1);
-            // add code for color clamping below this line
+                // Clamp values higher the 1 to 1
+                if (r > 1) r = 1;
+                if (g > 1) g = 1;
+                if (b > 1) b = 1;
 
-            /*
-            if (r < 0) r = -r;
-            if (g < 0) g = -g;
-            if (b < 0) b = -b;
-            /*/
-            if (r < 0) r = 0;
-            if (g < 0) g = 0;
-            if (b < 0) b = 0;
-            //*/
+                // convert to int
+                int intR = (int)( r*255.0f );
+                int intG = (int)( g*255.0f );
+                int intB = (int)( b*255.0f );
+                int intA = 255;
 
-            /*
-            if (r > 1.0f) {
-                r = r / r;
-                g = g / r;
-                b = b / r;
-            }
-            if (g > 1.0f) {
-                r = r / g;
-                g = g / g;
-                b = b / g;
-            }
-            if (b > 1.0f) {
-                r = r / b;
-                g = g / b;
-                b = b / b;
-            }
-            /*/
-            if (r > 1) r = 1;
-            if (g > 1) g = 1;
-            if (b > 1) b = 1;
-            //*/
-
-            // convert to int
-            int intR = (int)( r*255.0f );
-            int intG = (int)( g*255.0f );
-            int intB = (int)( b*255.0f );
-            int intA = 255;
-
-            // pack the colours into an int
-            return (intA<<24) | (intR<<16) | (intG<<8) | intB;
+                // pack the colours into an int
+                return (intA<<24) | (intR<<16) | (intG<<8) | intB;
 
 	}	
 	
