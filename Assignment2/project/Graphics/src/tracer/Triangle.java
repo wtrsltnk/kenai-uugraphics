@@ -22,6 +22,7 @@ public class Triangle extends Traceable {
 		p.parseKeyword( "{" );
 		while( !p.tryKeyword("}") && !p.endOfFile() ) {
 			if( p.tryKeyword("p1") ) {
+				this.vertices[0] = new Vertex();
 				this.vertices[0].point.parse( p );
 			} else if( p.tryKeyword("u1") ) {
 				this.vertices[0].u = p.parseFloat();
@@ -30,6 +31,7 @@ public class Triangle extends Traceable {
 			}
 
 			else if( p.tryKeyword("p2") ) {
+				this.vertices[1] = new Vertex();
 				this.vertices[1].point.parse( p );
 			} else if( p.tryKeyword("u2") ) {
 				this.vertices[1].u = p.parseFloat();
@@ -38,6 +40,7 @@ public class Triangle extends Traceable {
 			}
 
 			else if( p.tryKeyword("p3") ) {
+				this.vertices[2] = new Vertex();
 				this.vertices[2].point.parse( p );
 			} else if( p.tryKeyword("u3") ) {
 				this.vertices[2].u = p.parseFloat();

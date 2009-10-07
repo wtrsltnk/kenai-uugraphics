@@ -43,7 +43,7 @@ public class Tracer extends Frame {
 		lights = new ArrayList();
 		try {
 			
-			Parser p = new Parser( "scene.txt" );
+			Parser p = new Parser( "sceneGraphics.txt" );
 
 			while( !p.endOfFile() ) {
 				if( p.tryKeyword( "width" ) ) {
@@ -62,6 +62,10 @@ public class Tracer extends Frame {
 					Plane pl = new Plane();
 					pl.parse( p );
 					scene.add( pl );
+				} else if( p.tryKeyword( "triangle" ) ) {
+					Triangle t = new Triangle();
+					t.parse( p );
+					scene.add( t );
 				} else if( p.tryKeyword( "camera" ) ) {
 					camera.parse( p );
 				} else if( p.tryKeyword( "light" ) ) {

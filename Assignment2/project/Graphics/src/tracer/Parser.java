@@ -101,7 +101,7 @@ public class Parser {
 			return false;
 		}
 	}
-	
+
 	public float parseFloat() throws IOException {
 		int token = tokenizer.nextToken();
 		if( token == StreamTokenizer.TT_NUMBER ) {
@@ -109,6 +109,16 @@ public class Parser {
 		} else {
 			System.out.println( errorString() + "Expected floating point constant." );
 			return 0;
+		}
+	}
+
+	public String parseString() throws IOException {
+		int token = tokenizer.nextToken();
+		if( token == StreamTokenizer.TT_WORD ) {
+			return tokenizer.sval;
+		} else {
+			System.out.println( errorString() + "Expected floating point constant." );
+			return "";
 		}
 	}
 	
