@@ -55,13 +55,64 @@ public class Triangle extends Traceable {
 			}
 		}
 	}
+	
+	private Vec3 getBYt(Ray r) {
+		float a = this.vertices[0].point.x - this.vertices[1].point.x;
+		float b = this.vertices[0].point.y - this.vertices[1].point.y;
+		float c = this.vertices[0].point.z - this.vertices[1].point.z;
 
+		float d = this.vertices[0].point.x - this.vertices[2].point.x;
+		float e = this.vertices[0].point.y - this.vertices[2].point.y;
+		float f = this.vertices[0].point.z - this.vertices[2].point.z;
+
+		float g = r.direction.x;
+		float h = r.direction.y;
+		float i = r.direction.z;
+
+		float j = this.vertices[0].point.x - r.origin.x;
+		float k = this.vertices[0].point.y - r.origin.y;
+		float l = this.vertices[0].point.z - r.origin.z;
+
+		float ei_min_hf = ((e * i) - (h * f));
+		float gf_min_di = ((g * f) - (d * i));
+		float dh_min_eg = ((d * h) - (e * g));
+
+		float ak_min_jb = ((a * k) - (j * b));
+		float jc_min_al = ((j * c) - (a * l));
+		float bl_min_kc = ((b * l) - (k * c));
+
+		float M = (a * ei_min_hf) + (b * gf_min_di) + (c * dh_min_eg);
+
+		float B = ( (j * ei_min_hf) + (k * gf_min_di) + (l * dh_min_eg) ) / M;
+		float Y = ( (i * ak_min_jb) + (h * jc_min_al) + (g * bl_min_kc) ) / M;
+		float t = -( (f * ak_min_jb) + (e * jc_min_al) + (d * bl_min_kc) ) / M;
+
+		return new Vec3(B, Y, t);
+	}
+
+	// TODO: Make performance better by calculating B, Y and t only when necessary
 	public IntersectionInfo intersect( Ray r ) {
-		return new IntersectionInfo(false);
+		Vec3 BYt = getBYt(r);
+
+		if (BYt.z < 0) return new IntersectionInfo(false);
+		if ((BYt.y < 0) || (BYt.y > 1)) return new IntersectionInfo(false);
+		if ((BYt.x < 0) || (BYt.x > 1 - BYt.y)) return new IntersectionInfo(false);
+
+		Vec3 hitpoint = r.origin.add(r.direction.times(BYt.z));
+		Vec3 v1 = this.vertices[1].point.minus(this.vertices[0].point);
+		Vec3 v2 = this.vertices[2].point.minus(this.vertices[0].point);
+		Vec3 normal = v1.cross(v2);
+		normal.normalize();
+		return new IntersectionInfo(hitpoint, normal, BYt.z, this);
 	}
 
 	public boolean hit( Ray r ) {
+		Vec3 BYt = getBYt(r);
 
-		return false;
+		if (BYt.z < 0 || BYt.z > 1) return false;
+		if ((BYt.y < 0) || (BYt.y > 1)) return false;
+		if ((BYt.x < 0) || (BYt.x > 1 - BYt.y)) return false;
+
+		return true;
 	}
 }

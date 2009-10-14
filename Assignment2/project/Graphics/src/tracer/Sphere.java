@@ -64,10 +64,10 @@ public class Sphere extends Traceable {
 
                         // Make sure we only look in the positive direction of the ray, otherwise there will be weird artifacts visible
                         if (distance >= 0) {
-                                return new IntersectionInfo(location, normal, distance, this);
+							return new IntersectionInfo(location, normal, distance, this);
                         }
                         else{
-                                return new IntersectionInfo(false);
+							return new IntersectionInfo(false);
                         }
                 }
                 // If the discrimant > 0 there are two solotion

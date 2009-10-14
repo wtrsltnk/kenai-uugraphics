@@ -1,6 +1,8 @@
 package tracer;
 
+import java.util.Date;
 import java.util.Iterator;
+import java.util.Random;
 
 /**
  * Represents a ray: a ray can `trace' itself, calculating a color.
@@ -14,6 +16,14 @@ public class Ray {
 		origin = new Vec3( o );
 		direction = new Vec3( d );	
 	}
+
+	static long s = 0;
+	public Vec3 getPerlinNoise( IntersectionInfo info) {
+		Date d = new Date();
+		Random r = new Random(d.getTime() + (s++));
+		float f = r.nextFloat();
+		return new Vec3(r.nextFloat(), r.nextFloat(), r.nextFloat());
+	}
 	
 	/**
 	 * Calculates the local light term, given an IntersectionInfo and a Light.
@@ -21,20 +31,25 @@ public class Ray {
 	 * using a shadow feeler).
 	 */
 	public Vec3 localLight( IntersectionInfo info, Light light ) {
+			Vec3 diffuse = new Vec3(1, 1, 1);
             // diffuse component
                 // Calculate the Light direction vector
                 Vec3 l = light.location.minus(info.location);
                 l.normalize();
 
-                // Calculate the dotproduct of the intersectino normal and teh light
-                float ndotl = Math.max(0, info.normal.dot(l));
-                // Calculate the intensity of the material color as diffuse light
-                Vec3 cr = info.object.material.color.times(info.object.material.diffuse);
-                // Calculate the intensity of the light color
-                Vec3 cl = light.color.times(light.intensity);
+				// Calculate the dotproduct of the intersectino normal and teh light
+				float ndotl = Math.max(0, info.normal.dot(l));
+				// Calculate the intensity of the material color as diffuse light
+				Vec3 cr = info.object.material.color.times(info.object.material.diffuse);
+				// Calculate the intensity of the light color
+				Vec3 cl = light.color.times(light.intensity);
+				// Final diffuse color calculation
+				diffuse = cr.times(cl).times(ndotl);
 
-                // Final diffuse color calculation
-                Vec3 diffuse = cr.times(cl).times(ndotl);
+				// Check if we have to get the Perlin or regular value
+				if (info.object.material.usePerlin) {
+					diffuse = diffuse.add(getPerlinNoise(info));
+				}
 
             // specular component
                 // Calulate and normalize the direction in which the camera looks at the intersection

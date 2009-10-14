@@ -14,8 +14,8 @@ public class Material {
 		specular = 0.0f;
 		specularPower = 16.0f;
 		reflectance = 0.0f;
-		this.perlin1 = new Vec3();
-		this.perlin2 = new Vec3();
+		perlin = new Vec3( 1, 1, 1 );
+		usePerlin = false;
 	}
 	
 	public Vec3 color;	
@@ -24,8 +24,8 @@ public class Material {
 	public float specular;
 	public float specularPower;
 	public float reflectance;
-	public Vec3 perlin1;
-	public Vec3 perlin2;
+	public Vec3 perlin;
+	public boolean usePerlin;
 	public TextureSamping textureSampling;
 	public String textureFile;
 	
@@ -35,6 +35,7 @@ public class Material {
 			
 			if( p.tryKeyword("color") ) {
 				color.parse( p );
+				//perlin = new Vec3(color.x, color.y, color.z);
 			} else if( p.tryKeyword("ambient") ) {
 				ambient = p.parseFloat();
 			} else if( p.tryKeyword("diffuse") ) {
@@ -46,8 +47,9 @@ public class Material {
 			} else if( p.tryKeyword("reflectance") ) {
 				reflectance = p.parseFloat();
 			} else if( p.tryKeyword("perlin") ) {
-				perlin1.parse(p);
-				perlin2.parse(p);
+				color.parse(p);
+				perlin.parse(p);
+				usePerlin = true;
 			} else if( p.tryKeyword("texture") ) {
 				// Parse the Samping mode
 				if (p.tryKeyword("bilinear")) {
