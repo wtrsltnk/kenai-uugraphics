@@ -173,7 +173,7 @@ sphere {
 
 	material {
 		texture debug
-		color < 1, 1, 1 >
+		color < 1, 0, 1 >
 	}
 
 }

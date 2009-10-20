@@ -37,14 +37,14 @@ public abstract class Sampler2D {
 	
 	// scales and wraps to float [0..sourceWidth)
 	protected float scaleU( float u ) {
-	    // your code here
-		return u;
+	    float r = u % 1;
+		return (r * this.sourceWidth);
 	}
 
 	// scales and wraps to float [0..sourceHeight)
 	protected float scaleV( float v ) {
-	    // your code here
-		return v;
+	    float r = v % 1;
+		return (r * this.sourceHeight);
 	}
 	
 	

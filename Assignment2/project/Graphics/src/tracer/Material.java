@@ -16,6 +16,7 @@ public class Material {
 		reflectance = 0.0f;
 		perlin = new Vec3( 1, 1, 1 );
 		usePerlin = false;
+		texture = null;
 	}
 	
 	public Vec3 color;	
@@ -26,8 +27,7 @@ public class Material {
 	public float reflectance;
 	public Vec3 perlin;
 	public boolean usePerlin;
-	public TextureSamping textureSampling;
-	public String textureFile;
+	public Sampler2D texture;
 	
 	public void parse( Parser p ) throws IOException {
 		p.parseKeyword( "{" );
@@ -51,18 +51,14 @@ public class Material {
 				perlin.parse(p);
 				usePerlin = true;
 			} else if( p.tryKeyword("texture") ) {
+				String textureMode = p.parseString();
 				// Parse the Samping mode
-				if (p.tryKeyword("bilinear")) {
-					this.textureSampling = TextureSamping.Bilinear;
-				} else if (p.tryKeyword("nearest")) {
-					this.textureSampling = TextureSamping.Nearest;
-				} else if (p.tryKeyword("debug")) {
-					this.textureSampling = TextureSamping.Debug;
-				}
-
-				// Only parse texture file when samping mode is not Debug
-				if (this.textureSampling != TextureSamping.Debug) {
-					this.textureFile = p.parseString();
+				if (textureMode.equals("bilinear")) {
+					this.texture = new BilinearSampler(p.parseString());
+				} else if (textureMode.equals("nearest")) {
+					this.texture = new NearestSampler(p.parseString());
+				} else if (textureMode.equals("debug")) {
+					this.texture = new DebugSampler();
 				}
 			} else {
 				System.out.println( p.tokenWasUnexpected() );	
