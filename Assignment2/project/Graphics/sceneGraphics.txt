@@ -6,9 +6,9 @@
  */
 
 // some basic settings
-width	400
-height	400
-maxReflectionDepth 6
+width	800
+height	800
+maxReflectionDepth 2
 gamma 1.0
 
 

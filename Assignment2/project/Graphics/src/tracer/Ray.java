@@ -16,14 +16,6 @@ public class Ray {
 		origin = new Vec3( o );
 		direction = new Vec3( d );	
 	}
-
-	static long s = 0;
-	public Vec3 getPerlinNoise( IntersectionInfo info) {
-		Date d = new Date();
-		Random r = new Random(d.getTime() + (s++));
-		r.nextFloat();
-		return new Vec3(r.nextFloat(), r.nextFloat(), r.nextFloat());
-	}
 	
 	/**
 	 * Calculates the local light term, given an IntersectionInfo and a Light.
@@ -45,11 +37,6 @@ public class Ray {
 				Vec3 cl = light.color.times(light.intensity);
 				// Final diffuse color calculation
 				diffuse = cr.times(cl).times(ndotl);
-
-				// Check if we have to get the Perlin or regular value
-				if (info.object.material.usePerlin) {
-					diffuse = diffuse.add(getPerlinNoise(info));
-				}
 
             // specular component
                 // Calulate and normalize the direction in which the camera looks at the intersection
@@ -103,6 +90,11 @@ public class Ray {
 			// actually hit something
 			Material material = nearestHit.object.material;
 			Vec3 color = material.color.times( material.ambient ); // ambient
+
+			if (material.usePerlin) {
+				float perlin = Math.abs(material.calculatePerlinColor(nearestHit.location));
+				color = color.add(material.perlin.times(perlin).add(material.color.times(1-perlin)));
+			}
 			
 			// local contribution of light
 			Iterator lightIter = Tracer.lights.iterator();
@@ -116,23 +108,23 @@ public class Ray {
 			}
 			
 			// global illumination
-                        if (maxReflectionsLeft > 0) {
-                                // Direction in which the current trace is tracing
-                                Vec3 e = this.direction;
-                                e.normalize();
-                                // The normal of the nearest hit of the current trace
-                                Vec3 n = nearestHit.normal;
-                                n.normalize();
+			if (maxReflectionsLeft > 0) {
+			// Direction in which the current trace is tracing
+				Vec3 e = this.direction;
+				e.normalize();
+				// The normal of the nearest hit of the current trace
+				Vec3 n = nearestHit.normal;
+				n.normalize();
 
-                                // Calulate the ray for tracing the reflectance
-                                Ray ray = new Ray(nearestHit.location, e.add(n.times(e.times(-1).dot(n)).times(2)));
+				// Calulate the ray for tracing the reflectance
+				Ray ray = new Ray(nearestHit.location, e.add(n.times(e.times(-1).dot(n)).times(2)));
 
-                                // Trace the reflection ray were for every reflectance the number of maxReflectionsLeft is lowered with 1
-                                Vec3 reflectionColor = ray.trace(nearestHit.object, maxReflectionsLeft - 1);
+				// Trace the reflection ray were for every reflectance the number of maxReflectionsLeft is lowered with 1
+				Vec3 reflectionColor = ray.trace(nearestHit.object, maxReflectionsLeft - 1);
 
-                                // Add the color from tracing the reflection ray and multiply it with the materials reflectance setting
-                                return color.add(reflectionColor.times(nearestHit.object.material.reflectance));
-                        }
+				// Add the color from tracing the reflection ray and multiply it with the materials reflectance setting
+				return color.add(reflectionColor.times(nearestHit.object.material.reflectance));
+			}
 			
 			
 			return color;
