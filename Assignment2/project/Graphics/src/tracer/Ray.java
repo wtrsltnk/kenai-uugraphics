@@ -32,11 +32,6 @@ public class Ray {
 	 */
 	public Vec3 localLight( IntersectionInfo info, Light light ) {
 			Vec3 diffuse = new Vec3(1, 1, 1);
-			float u = 0, v = 0;
-			
-			if (info.object.material.texture != null) 
-				diffuse = info.object.material.texture.sample(info.location.x, info.location.y);
-
             // diffuse component
                 // Calculate the Light direction vector
                 Vec3 l = light.location.minus(info.location);
