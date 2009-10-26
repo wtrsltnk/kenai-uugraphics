@@ -8,7 +8,7 @@
 // some basic settings
 width	800
 height	800
-maxReflectionDepth 2
+maxReflectionDepth 4
 gamma 1.0
 
 
@@ -32,7 +32,7 @@ triangle {
                 // observe that "color" influences the final color,
                 // even with texturing
 		color < 1,1,1 >
-		texture bilinear huerst.jpg
+		//texture bilinear huerst.jpg
 		ambient 0.5
 	}
 }
@@ -53,7 +53,7 @@ triangle {
 
 	material {               
 		color < 1,1,1 >
-		texture bilinear cm.jpg
+		//texture bilinear cm.jpg
 		ambient 0.8
 		diffuse 0.5
 	}
@@ -80,7 +80,7 @@ plane {
 	//uDirection < 0, 0.02, 0.02 >
 	uDirection < 0.0, 0.0, -0.02 >
 	material {
-		texture bilinear bird-seamless.jpg
+		//texture bilinear bird-seamless.jpg
 		ambient 0.5
 	}
 
@@ -94,7 +94,7 @@ plane {
 	uDirection < 0.009, 0, 0 >
 
 	material {
-		texture bilinear mouse-seamless.jpg
+		//texture bilinear mouse-seamless.jpg
 		color < 1, 1, 1 >
 	}
 
@@ -108,7 +108,7 @@ plane {
 	uDirection < -0.005, 0, 0 >
 
 	material {
-		texture nearest robbysaskiatile.jpg
+		//texture nearest robbysaskiatile.jpg
 		color < 1, 1, 1 >
 	}
 
@@ -141,7 +141,7 @@ sphere {
 	material {
 		ambient 0.5
 		diffuse 1
-		texture bilinear uu.jpg
+		//texture bilinear uu.jpg
 		specular 0.5
 		specularPower 10
 
@@ -158,7 +158,7 @@ sphere {
 	material {
 		ambient 0.5
 		diffuse 0.5
-		texture bilinear cg2.jpg
+		//texture bilinear cg2.jpg
 		specular 0.7
 		specularPower 500
 	}
@@ -173,7 +173,9 @@ sphere {
 
 	material {
 		texture debug
-		color < 1, 0, 1 >
+		color < 1, 1, 1 >		
+		specular 0.8
+		specularPower 100
 	}
 
 }
@@ -187,7 +189,7 @@ sphere {
 	material {
 		ambient 0.5
 		diffuse 0.7
-		texture bilinear grid100x100.jpg		
+		//texture bilinear grid100x100.jpg		
 		specular 0.8
 		specularPower 300
 		

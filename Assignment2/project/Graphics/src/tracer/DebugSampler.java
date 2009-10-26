@@ -11,12 +11,8 @@ package tracer;
  */
 public class DebugSampler extends Sampler2D {
 
-	public DebugSampler() {
-		
-	}
-
 	public Vec3 sample( float u, float v ) {
-		return new Vec3(this.scaleU(u), this.scaleV(v), 0);
+		return new Vec3(u, v, 0);
 	}
 
 }

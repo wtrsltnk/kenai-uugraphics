@@ -28,6 +28,25 @@ public class IntersectionInfo {
 		this.normal = normal;
 		this.distance = distance;
 		this.object = object;
+		this.u = 0;
+		this.v = 0;
+	}
+	/**
+	 * Constructor indicating there was an intersection.
+	 * @param location The location of the intersection
+	 * @param normal The normal of the object at the point of intersection.
+	 * @param distance The distance from ray origin to the intersection point.
+	 * @param object The object that was hit. Supply `this' here from the
+	 *    intersect method of your Traceable.
+	 */
+	public IntersectionInfo( Vec3 location, Vec3 normal, float distance, Traceable object, float u, float v ) {
+		this.hit = true;
+		this.location = location;
+		this.normal = normal;
+		this.distance = distance;
+		this.object = object;
+		this.u = u;
+		this.v = v;
 	}
 	
 	public boolean hit;
@@ -35,5 +54,6 @@ public class IntersectionInfo {
 	public Vec3 normal;
 	public float distance;		
 	public Traceable object;
+	public float u, v;
 	
 }

@@ -91,6 +91,11 @@ public class Ray {
 			Material material = nearestHit.object.material;
 			Vec3 color = material.color.times( material.ambient ); // ambient
 
+			if (material.texture != null) {
+				Vec3 samplerColor = material.texture.sample(nearestHit.u, nearestHit.v);
+				color = samplerColor.times(material.color);
+			}
+
 			if (material.usePerlin) {
 				float perlin = Math.abs(material.calculatePerlinColor(nearestHit.location));
 				color = color.add(material.perlin.times(perlin).add(material.color.times(1-perlin)));
