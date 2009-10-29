@@ -16,9 +16,9 @@ public class NearestSampler extends Sampler2D {
 	}
 
 	public Vec3 sample( float u, float v ) {
-//		int color[] = this.rawRead((int)Math.floor(this.scaleU(u)), (int)Math.floor(this.scaleV(v)));
-//		return new Vec3(color[0]/255.0f, color[1]/255.0f, color[2]/255.0f);
-		return new Vec3();
+		int [] result = new int[3];
+		result = this.rawRead((int)scaleU(u), (int)scaleV(v));
+		return new Vec3(scaleOutput(result[0]), scaleOutput(result[1]), scaleOutput(result[2]));
 	}
 
 }

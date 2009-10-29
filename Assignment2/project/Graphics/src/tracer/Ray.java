@@ -22,7 +22,7 @@ public class Ray {
 	 * This method does <b>not</b> do an occlusion test; do this yourself (e.g.
 	 * using a shadow feeler).
 	 */
-	public Vec3 localLight( IntersectionInfo info, Light light ) {
+	public Vec3 localLight( IntersectionInfo info, Light light, Vec3 color ) {
 			Vec3 diffuse = new Vec3(1, 1, 1);
             // diffuse component
                 // Calculate the Light direction vector
@@ -37,6 +37,8 @@ public class Ray {
 				Vec3 cl = light.color.times(light.intensity);
 				// Final diffuse color calculation
 				diffuse = cr.times(cl).times(ndotl);
+
+				diffuse = diffuse.times(color);
 
             // specular component
                 // Calulate and normalize the direction in which the camera looks at the intersection
@@ -93,7 +95,7 @@ public class Ray {
 
 			if (material.texture != null) {
 				Vec3 samplerColor = material.texture.sample(nearestHit.u, nearestHit.v);
-				color = samplerColor.times(material.color);
+				color = samplerColor.times(color);
 			}
 
 			if (material.usePerlin) {
@@ -108,7 +110,7 @@ public class Ray {
 				Vec3 shadowFeelerDirection = light.location.minus( nearestHit.location );
 				Ray shadowFeeler = new Ray( nearestHit.location, shadowFeelerDirection );
 				if( !shadowFeeler.hit( nearestHit.object ) ) {
-					color = color.add(  localLight( nearestHit, light )  );
+					color = color.add(  localLight( nearestHit, light, color )  );
 				}
 			}
 			

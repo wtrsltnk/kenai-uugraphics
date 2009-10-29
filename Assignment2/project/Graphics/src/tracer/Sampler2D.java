@@ -37,14 +37,14 @@ public abstract class Sampler2D {
 	
 	// scales and wraps to float [0..sourceWidth)
 	protected float scaleU( float u ) {
-	    float r = u % 1;
-		return (r * this.sourceWidth);
+	    float r = u - (float)Math.floor(u);
+		return (float)Math.floor(r * this.sourceWidth);
 	}
 
 	// scales and wraps to float [0..sourceHeight)
 	protected float scaleV( float v ) {
-	    float r = v % 1;
-		return (r * this.sourceHeight);
+	    float r = v - (float)Math.floor(v);
+		return (float)Math.floor(r * this.sourceHeight);
 	}
 	
 	
@@ -52,7 +52,7 @@ public abstract class Sampler2D {
 		source = null;
 	}
 	Sampler2D( String filename ) {
-		File f = new File(filename);
+		File f = new File("images/" + filename);
 		try {
 			BufferedImage i = ImageIO.read(f);
 			sourceWidth = i.getWidth();
@@ -61,6 +61,7 @@ public abstract class Sampler2D {
 			setOutputRange( 0, 1 );
 		} catch (IOException e) {
 			source = null;
+			System.out.println(e.getMessage() + " " + filename);
 		}
 	}
 	

@@ -141,9 +141,17 @@ public class Vec3 {
 	 * Default constructor. Makes the vector (0,0,0)
 	 */
 	public Vec3() {
-		x = 0;	
+		x = 0;
 		y = 0;
 		z = 0;
+	}
+	/**
+	 * Constructor from xyz int array
+	 */
+	public Vec3(int[] xyz) {
+		x = (float)xyz[0] / 255.0f;
+		y = (float)xyz[1] / 255.0f;
+		z = (float)xyz[2] / 255.0f;
 	}
 	
 	/**

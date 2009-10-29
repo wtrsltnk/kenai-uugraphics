@@ -6,10 +6,11 @@ import java.io.IOException;
  * 3D flat, onbounded, traceable thingy, represented by normal vector and distance from the origin
  */
 public class Plane extends Traceable {
-
+	
 	Vec3 normal;
 	float offset;
 	Vec3 uDirection;
+	Vec3 vDirection;
 	
 	public Plane( Vec3 n, float o ) {
 		normal = new Vec3(n);
@@ -40,8 +41,8 @@ public class Plane extends Traceable {
 			} else {
 				System.out.println( p.tokenWasUnexpected() );	
 			}
-			
 		}
+		this.vDirection = this.normal.cross(this.uDirection);
 	}
 	
 	public IntersectionInfo intersect( Ray r ) {
@@ -51,6 +52,10 @@ public class Plane extends Traceable {
                 // Make sure we only look in the positive direction of the ray, otherwise there will be weird artifacts visible
                 if (t >= 0)
                 {
+					Vec3 hitLocation = r.origin.add(r.direction.times(t));
+					if (this.material.texture != null) {
+						return new IntersectionInfo(hitLocation, normal, t, this, hitLocation.dot(uDirection), hitLocation.dot(vDirection));
+					}
                     return new IntersectionInfo(r.origin.add(r.direction.times(t)), normal, t, this);
                 }
                 return new IntersectionInfo(false);

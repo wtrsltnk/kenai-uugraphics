@@ -98,11 +98,23 @@ public class Triangle extends Traceable {
 		if ((BYt.y < 0) || (BYt.y > 1)) return new IntersectionInfo(false);
 		if ((BYt.x < 0) || (BYt.x > 1 - BYt.y)) return new IntersectionInfo(false);
 
+		// Calculate The position of the hit
 		Vec3 hitpoint = r.origin.add(r.direction.times(BYt.z));
+
+		// Calculate normal
 		Vec3 v1 = this.vertices[1].point.minus(this.vertices[0].point);
 		Vec3 v2 = this.vertices[2].point.minus(this.vertices[0].point);
 		Vec3 normal = v1.cross(v2);
 		normal.normalize();
+
+		if (this.material.texture != null) {
+			//Calculate u & v
+			float u = this.vertices[0].u + BYt.x * (this.vertices[1].u - this.vertices[0].u) + BYt.y * (this.vertices[2].u - this.vertices[0].u);
+			float v = this.vertices[0].v + BYt.x * (this.vertices[1].v - this.vertices[0].v) + BYt.y * (this.vertices[2].v - this.vertices[0].v);
+
+			return new IntersectionInfo(hitpoint, normal, BYt.z, this, u, v);
+		}
+
 		return new IntersectionInfo(hitpoint, normal, BYt.z, this);
 	}
 

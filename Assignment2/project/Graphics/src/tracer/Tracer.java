@@ -122,7 +122,7 @@ public class Tracer extends Frame {
 			if( (y&7) == 0 ) paint( getGraphics() );
 		}
 		
-		System.out.println( "Finished raytracing." );
+		System.out.println( "Finished raytracing" );
 		
 	}
 	

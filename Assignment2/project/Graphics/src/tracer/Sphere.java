@@ -77,6 +77,7 @@ public class Sphere extends Traceable {
 				// TODO: Calculate u & v
 				float theta = (float)Math.acos((location.y - origin.y) / radius);
 				float phi = (float)Math.atan2((location.z - origin.z), (location.x - origin.x));
+				phi += Math.PI;
 
 				if (phi < 0)
 					phi += (Math.PI * 2);

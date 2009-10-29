@@ -16,9 +16,25 @@ public class BilinearSampler extends Sampler2D {
 	}
 
 	public Vec3 sample( float u, float v ) {
-//		int color[] = this.rawRead((int)this.scaleU(u), (int)this.scaleV(v));
-//		return new Vec3(color[0]/255.0f, color[1]/255.0f, color[2]/255.0f);
-		return new Vec3();
+		float uDash = (float)(this.sourceWidth*u - Math.floor(this.sourceWidth*u));
+		float vDash = (float)(this.sourceHeight*v - Math.floor(this.sourceHeight*v));
+
+		Vec3 colorIJ	= new Vec3(this.rawRead((int)this.scaleU(u),		(int)this.scaleV(v)));
+		Vec3 colorIIJ	= new Vec3(this.rawRead((int)this.scaleU(u) + 1,	(int)this.scaleV(v)));
+		Vec3 colorIIJJ	= new Vec3(this.rawRead((int)this.scaleU(u) + 1,	(int)this.scaleV(v) + 1));
+		Vec3 colorIJJ	= new Vec3(this.rawRead((int)this.scaleU(u),		(int)this.scaleV(v) + 1));
+
+		float w1 = (1 - uDash) * (1 - vDash);
+		float w2 = uDash * (1 - vDash);
+		float w3 = (1 - uDash) * vDash;
+		float w4 = uDash * vDash;
+
+		colorIJ = colorIJ.times(w1);
+		colorIIJ = colorIIJ.times(w2);
+		colorIJJ = colorIJJ.times(w3);
+		colorIIJJ = colorIIJJ.times(w4);
+
+		return colorIJ.add(colorIIJ).add(colorIJJ).add(colorIIJJ);
 	}
 
 }
