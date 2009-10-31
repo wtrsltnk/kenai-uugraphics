@@ -110,11 +110,9 @@ public class Material {
 		this.G = new Vec3[Material.N];
 		// Generate N unit vectors
 		for (int i = 0; i < Material.N; i++) {
-			this.G[i] = new Vec3(2, 2, 2);
-			while (this.G[i].length() > 1) {
-				this.G[i].x = (float)(2 * Math.random()) - 1;
-				this.G[i].y = (float)(2 * Math.random()) - 1;
-				this.G[i].z = (float)(2 * Math.random()) - 1;
+			this.G[i] = new Vec3((float)(2 * Math.random()) - 1, (float)(2 * Math.random()) - 1, (float)(2 * Math.random()) - 1);
+			while (this.rejectVector(this.G[i])) {
+				this.G[i] = new Vec3((float)(2 * Math.random()) - 1, (float)(2 * Math.random()) - 1, (float)(2 * Math.random()) - 1);
 			}
 			this.G[i].normalize();
 		}
@@ -125,6 +123,10 @@ public class Material {
 		for (int i = 0; i < Material.N; i++) {
 			this.P[i] = (int)(Math.random() * (Material.N-1));
 		}
+	}
+
+	private boolean rejectVector(Vec3 v) {
+		return v.lengthSquared() < 1;
 	}
 	
 }
