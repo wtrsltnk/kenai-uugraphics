@@ -6,9 +6,9 @@
  */
 
 // some basic settings
-width	800
-height	800
-maxReflectionDepth 4
+width	700
+height	700
+maxReflectionDepth 6
 gamma 1.0
 
 
@@ -124,7 +124,7 @@ sphere {
 	material {
 		ambient 0.5
 		diffuse 1
-		//texture bilinear campus.jpg
+		texture bilinear campus.jpg
 		specular 0.5
 		specularPower 10
 	}
@@ -141,7 +141,7 @@ sphere {
 	material {
 		ambient 0.5
 		diffuse 1
-		//texture bilinear uu.jpg
+		texture bilinear uu.jpg
 		specular 0.5
 		specularPower 10
 
@@ -158,7 +158,7 @@ sphere {
 	material {
 		ambient 0.5
 		diffuse 0.5
-		//texture bilinear cg2.jpg
+		texture bilinear cg2.jpg
 		specular 0.7
 		specularPower 500
 	}
@@ -173,9 +173,7 @@ sphere {
 
 	material {
 		texture debug
-		color < 1, 1, 1 >		
-		specular 0.0
-		specularPower 100
+		color < 1, 1, 1 >
 	}
 
 }
@@ -189,7 +187,7 @@ sphere {
 	material {
 		ambient 0.5
 		diffuse 0.7
-		//texture bilinear grid100x100.jpg
+		texture bilinear grid100x100.jpg		
 		specular 0.8
 		specularPower 300
 		

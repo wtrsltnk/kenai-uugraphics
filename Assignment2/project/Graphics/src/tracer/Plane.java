@@ -16,13 +16,11 @@ public class Plane extends Traceable {
 		normal = new Vec3(n);
 		normal.normalize();
 		offset = o;
-		uDirection = new Vec3();
 		material = new Material();
 	}
 	public Plane() {
 		normal = new Vec3(0,1,0);
 		offset = 0.0f;
-		uDirection = new Vec3();
 		material = new Material();
 	}
 	
@@ -37,11 +35,14 @@ public class Plane extends Traceable {
 			} else if( p.tryKeyword("material") ) {
 				material.parse( p );
 			} else if( p.tryKeyword("udirection") ) {
+				uDirection = new Vec3();
 				uDirection.parse( p );
 			} else {
 				System.out.println( p.tokenWasUnexpected() );	
 			}
 		}
+		if (this.uDirection == null)
+			this.uDirection = this.normal.cross(this.normal);
 		this.vDirection = this.normal.cross(this.uDirection);
 	}
 	

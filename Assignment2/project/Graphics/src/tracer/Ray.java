@@ -1,8 +1,6 @@
 package tracer;
 
-import java.util.Date;
 import java.util.Iterator;
-import java.util.Random;
 
 /**
  * Represents a ray: a ray can `trace' itself, calculating a color.
@@ -22,42 +20,40 @@ public class Ray {
 	 * This method does <b>not</b> do an occlusion test; do this yourself (e.g.
 	 * using a shadow feeler).
 	 */
-	public Vec3 localLight( IntersectionInfo info, Light light, Vec3 color ) {
-			Vec3 diffuse = new Vec3(1, 1, 1);
-            // diffuse component
-                // Calculate the Light direction vector
-                Vec3 l = light.location.minus(info.location);
-                l.normalize();
+	public Vec3 localLight( IntersectionInfo info, Light light, Vec3 diffuseBase ) {
+		Vec3 diffuse = new Vec3(diffuseBase);
+		// diffuse component
+			// Calculate the Light direction vector
+			Vec3 l = light.location.minus(info.location);
+			l.normalize();
 
-				// Calculate the dotproduct of the intersectino normal and teh light
-				float ndotl = Math.max(0, info.normal.dot(l));
-				// Calculate the intensity of the material color as diffuse light
-				Vec3 cr = info.object.material.color.times(info.object.material.diffuse);
-				// Calculate the intensity of the light color
-				Vec3 cl = light.color.times(light.intensity);
-				// Final diffuse color calculation
-				diffuse = cr.times(cl).times(ndotl);
+			// Calculate the dotproduct of the intersectino normal and teh light
+			float ndotl = Math.max(0, info.normal.dot(l));
+			// Calculate the intensity of the material color as diffuse light
+			Vec3 cr = info.object.material.color.times(info.object.material.diffuse);
+			// Calculate the intensity of the light color
+			Vec3 cl = light.color.times(light.intensity);
+			// Final diffuse color calculation
+			diffuse = diffuse.times(cr.times(cl).times(ndotl));
 
-				diffuse = diffuse.times(color);
+		// specular component
+			// Calulate and normalize the direction in which the camera looks at the intersection
+			Vec3 e = this.direction.times(-1);
+			e.normalize();
 
-            // specular component
-                // Calulate and normalize the direction in which the camera looks at the intersection
-                Vec3 e = this.direction.times(-1);
-                e.normalize();
+			// Calulate the vecor between e and l and normalize it
+			Vec3 h = e.add(l);
+			h.normalize();
 
-                // Calulate the vecor between e and l and normalize it
-                Vec3 h = e.add(l);
-                h.normalize();
+			// Calculate the dotproduct to determine how far h is from the normal
+			float hdotn = h.dot(info.normal);
 
-                // Calculate the dotproduct to determine how far h is from the normal
-                float hdotn = h.dot(info.normal);
+			// Use specular power to set the intensity of specular effect
+			float hdotnpow = (float)Math.pow(hdotn, info.object.material.specularPower);
+			// Final specular color calculation
+			Vec3 specular = cl.times(hdotnpow).times(info.object.material.specular);
 
-                // Use specular power to set the intensity of specular effect
-                float hdotnpow = (float)Math.pow(hdotn, info.object.material.specularPower);
-                // Final specular color calculation
-                Vec3 specular = cl.times(hdotnpow).times(info.object.material.specular);
-
-                // Add the specular to the diffuse color
+			// Add the specular to the diffuse color
 		return diffuse.add( specular );
 	}
 	
@@ -91,18 +87,21 @@ public class Ray {
 		if( nearestHit != null ) {
 			// actually hit something
 			Material material = nearestHit.object.material;
-			Vec3 color = material.color.times( material.ambient ); // ambient
 
-			if (material.texture != null) {
-				Vec3 samplerColor = material.texture.sample(nearestHit.u, nearestHit.v);
-				color = samplerColor.times(color);
-			}
+			Vec3 color = material.color;//.times( material.ambient ); // ambient
 
 			if (material.usePerlin) {
 				float perlin = Math.abs(material.calculatePerlinColor(nearestHit.location));
 				color = color.add(material.perlin.times(perlin).add(material.color.times(1-perlin)));
 			}
-			
+
+			if (material.texture != null) {
+				color = material.texture.sample(nearestHit.u, nearestHit.v).times(color);
+			}
+
+			Vec3 noambient = new Vec3(color);
+			color = color.times(material.ambient);
+
 			// local contribution of light
 			Iterator lightIter = Tracer.lights.iterator();
 			while( lightIter.hasNext() ) {
@@ -110,10 +109,10 @@ public class Ray {
 				Vec3 shadowFeelerDirection = light.location.minus( nearestHit.location );
 				Ray shadowFeeler = new Ray( nearestHit.location, shadowFeelerDirection );
 				if( !shadowFeeler.hit( nearestHit.object ) ) {
-					color = color.add(  localLight( nearestHit, light, color )  );
+					color = color.add(  localLight( nearestHit, light, noambient )  );
 				}
 			}
-			
+
 			// global illumination
 			if (maxReflectionsLeft > 0) {
 			// Direction in which the current trace is tracing

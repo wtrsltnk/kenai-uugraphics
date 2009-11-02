@@ -14,7 +14,7 @@ public class Material {
 		specular = 0.0f;
 		specularPower = 16.0f;
 		reflectance = 0.0f;
-		perlin = new Vec3( 1, 1, 1 );
+		perlin = new Vec3(color);
 		usePerlin = false;
 		texture = null;
 	}
