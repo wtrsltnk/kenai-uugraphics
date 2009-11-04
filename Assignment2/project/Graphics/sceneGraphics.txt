@@ -226,5 +226,5 @@ light {
 light {
 	location <-10, 40, -80>
 	color <0.8, 0.2, 0.2>
-	intensity 0.2
+	intensity 0.0
 }

@@ -104,7 +104,7 @@ public class Triangle extends Traceable {
 		// Calculate normal
 		Vec3 v1 = this.vertices[1].point.minus(this.vertices[0].point);
 		Vec3 v2 = this.vertices[2].point.minus(this.vertices[0].point);
-		Vec3 normal = v1.cross(v2);
+		Vec3 normal = v2.cross(v1);
 		normal.normalize();
 
 		if (this.material.texture != null) {

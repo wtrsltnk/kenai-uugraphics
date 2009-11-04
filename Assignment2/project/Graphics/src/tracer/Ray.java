@@ -34,7 +34,7 @@ public class Ray {
 			// Calculate the intensity of the light color
 			Vec3 cl = light.color.times(light.intensity);
 			// Final diffuse color calculation
-			diffuse = diffuse.times(cr.times(cl).times(ndotl));
+			diffuse = diffuse.times(info.object.material.diffuse).times(cl).times(ndotl);
 
 		// specular component
 			// Calulate and normalize the direction in which the camera looks at the intersection
@@ -52,6 +52,7 @@ public class Ray {
 			float hdotnpow = (float)Math.pow(hdotn, info.object.material.specularPower);
 			// Final specular color calculation
 			Vec3 specular = cl.times(hdotnpow).times(info.object.material.specular);
+			specular = specular.times(light.intensity);
 
 			// Add the specular to the diffuse color
 		return diffuse.add( specular );
@@ -88,11 +89,11 @@ public class Ray {
 			// actually hit something
 			Material material = nearestHit.object.material;
 
-			Vec3 color = material.color;//.times( material.ambient ); // ambient
+			Vec3 color = material.color;
 
 			if (material.usePerlin) {
-				float perlin = Math.abs(material.calculatePerlinColor(nearestHit.location));
-				color = color.add(material.perlin.times(perlin).add(material.color.times(1-perlin)));
+				float perlin = Math.abs(material.calculatePerlin(nearestHit.location));
+				color = color.times(material.ambient).add(material.perlin.times(perlin).add(material.color.times(1-perlin)));
 			}
 
 			if (material.texture != null) {
