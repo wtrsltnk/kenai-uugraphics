@@ -1,0 +1,243 @@
+/*
+ * Programming assignment 2, Graphics 2009/2010
+ *
+ */
+
+// some basic settings
+width	700
+height	700
+maxReflectionDepth 6
+gamma 1.0
+
+
+// light in front
+light {
+	location <0, 40, 0>
+	color <1,1,1>
+	intensity 1
+}
+
+
+
+
+// ground plane
+plane {
+	normal < 0, 1, 0 >
+	offset 20
+
+	material {
+		ambient 0.2
+		color < 1, 1, 1 >
+		reflectance 0.9
+		specularPower 500
+	}
+
+}
+
+
+// back wall with clouds
+plane {
+	normal < 0, 0, 1 >
+	offset 150
+	uDirection < 0.009, 0, 0 >
+
+	material {
+		color < 0, 0.4, 1 >
+	}
+
+}
+
+
+//  wall behind camera
+plane {
+	normal < 0, 0, -1 >
+	offset 120
+	uDirection < -0.005, 0, 0 >
+
+	material {
+		color < 0, 0.4, 1 >
+	}
+
+}
+
+
+// Green sphere in front
+sphere {
+
+	origin	< -15, -20, -40 >
+	radius	10
+
+	material {
+		color <0, 1, 0>
+		ambient 0.5
+		diffuse 0.7
+		specular 0.8
+		specularPower 300
+
+	}
+
+}
+
+
+// Green sphere in back
+sphere {
+
+	origin	< 15, -20, 40 >
+	radius	10
+
+	material {
+		color <0, 1, 0>
+		ambient 0.5
+		diffuse 0.7
+		specular 0.8
+		specularPower 300
+
+	}
+
+}
+
+
+// Red sphere in front
+sphere {
+
+	origin	< 15, -20, -40 >
+	radius	10
+
+	material {
+		color <1, 0, 0>
+		ambient 0.5
+		diffuse 0.7
+		specular 0.8
+		specularPower 300
+
+	}
+
+}
+
+
+// Red sphere in back
+sphere {
+
+	origin	< -15, -20, 40 >
+	radius	10
+
+	material {
+		color <1, 0, 0>
+		ambient 0.5
+		diffuse 0.7
+		specular 0.8
+		specularPower 300
+
+	}
+
+}
+
+
+// Moon
+
+
+// sphere with campus texture map
+sphere {
+
+	origin	< 0, 25, -45 >
+	radius	12
+
+	material {
+		ambient 0.5
+		diffuse 1
+		texture bilinear earth.png
+		specular 0.5
+		specularPower 10
+	}
+
+}
+
+// Quad 2
+triangle {
+	p1 < 35, 10, -70 >
+	u1 1
+	v1 0
+
+	p2 <  0, -20, -75 >
+	u2 0
+	v2 1
+
+	p3<   0, 10, -75 >
+	u3 0
+	v3 0
+
+	material {
+		ambient 0
+		diffuse 0
+		specular 1
+		specularPower 1000
+		reflectance 0.9
+	}
+}
+
+triangle {
+	p1 < 35, 10, -70 >
+	u1 1
+	v1 0
+
+	p2 <  35, -20, -70 >
+	u2 1
+	v2 1
+
+	p3<   0, -20, -75 >
+	u3 0
+	v3 1
+
+	material {
+		ambient 0
+		diffuse 0
+		specular 1
+		specularPower 1000
+		reflectance 0.9
+	}
+}
+
+// Quad 3
+triangle {
+	p1 < 0, 10, -75 >
+	u1 1
+	v1 0
+
+	p2 <  -35, -20, -70 >
+	u2 0
+	v2 1
+
+	p3<   -35, 10, -70 >
+	u3 0
+	v3 0
+
+	material {
+		ambient 0
+		diffuse 0
+		specular 1
+		specularPower 1000
+		reflectance 0.9
+	}
+}
+
+triangle {
+	p1 < 0, 10, -75 >
+	u1 1
+	v1 0
+
+	p2 <  0, -20, -75 >
+	u2 1
+	v2 1
+
+	p3<   -35, -20, -70 >
+	u3 0
+	v3 1
+
+	material {
+		ambient 0
+		diffuse 0
+		specular 1
+		specularPower 1000
+		reflectance 0.9
+	}
+}
