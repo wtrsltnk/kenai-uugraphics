@@ -158,7 +158,7 @@ sphere {
 	material {
 		ambient 0.5
 		diffuse 0.5
-		texture bilinear Ball.bmp
+		texture bilinear ball.bmp
 		specular 0.7
 		specularPower 500
 	}
