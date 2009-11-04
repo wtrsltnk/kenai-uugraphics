@@ -37,13 +37,17 @@ public class Plane extends Traceable {
 			} else if( p.tryKeyword("udirection") ) {
 				uDirection = new Vec3();
 				uDirection.parse( p );
+			} else if( p.tryKeyword("vdirection") ) {
+				vDirection = new Vec3();
+				vDirection.parse( p );
 			} else {
 				System.out.println( p.tokenWasUnexpected() );	
 			}
 		}
-		if (this.uDirection == null)
+		if (this.uDirection == null) 
 			this.uDirection = this.normal.cross(this.normal);
-		this.vDirection = this.normal.cross(this.uDirection);
+		if (this.vDirection == null)
+			this.vDirection = this.normal.cross(this.uDirection);
 	}
 	
 	public IntersectionInfo intersect( Ray r ) {
