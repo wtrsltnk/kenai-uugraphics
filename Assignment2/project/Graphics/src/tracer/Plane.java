@@ -47,27 +47,27 @@ public class Plane extends Traceable {
 	}
 	
 	public IntersectionInfo intersect( Ray r ) {
-                Vec3 p1 = this.normal.times(-this.offset);
-                float t = (p1.minus(r.origin)).dot(this.normal) / r.direction.dot(this.normal);
+		Vec3 p1 = this.normal.times(-this.offset);
+		float t = (p1.minus(r.origin)).dot(this.normal) / r.direction.dot(this.normal);
 
-                // Make sure we only look in the positive direction of the ray, otherwise there will be weird artifacts visible
-                if (t >= 0)
-                {
-					Vec3 hitLocation = r.origin.add(r.direction.times(t));
-					if (this.material.texture != null) {
-						return new IntersectionInfo(hitLocation, normal, t, this, hitLocation.dot(uDirection), hitLocation.dot(vDirection));
-					}
-                    return new IntersectionInfo(r.origin.add(r.direction.times(t)), normal, t, this);
-                }
-                return new IntersectionInfo(false);
+		// Make sure we only look in the positive direction of the ray, otherwise there will be weird artifacts visible
+		if (t >= 0)
+		{
+			Vec3 hitLocation = r.origin.add(r.direction.times(t));
+			if (this.material.texture != null) {
+				return new IntersectionInfo(hitLocation, normal, t, this, hitLocation.dot(uDirection), hitLocation.dot(vDirection));
+			}
+			return new IntersectionInfo(r.origin.add(r.direction.times(t)), normal, t, this);
+		}
+		return new IntersectionInfo(false);
 	}
 	
 	public boolean hit( Ray r ) {
-                Vec3 p1 = this.normal.times(-this.offset);
-                float t = (p1.minus(r.origin)).dot(this.normal) / r.direction.dot(this.normal);
+		Vec3 p1 = this.normal.times(-this.offset);
+		float t = (p1.minus(r.origin)).dot(this.normal) / r.direction.dot(this.normal);
 
-                // Make sure the distance is between 0 and 1
-                return (t >= 0 && t <= 1);
+		// Make sure the distance is between 0 and 1
+		return (t >= 0 && t <= 1);
 	}
 	
 }
