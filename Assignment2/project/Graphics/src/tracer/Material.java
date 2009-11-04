@@ -72,13 +72,12 @@ public class Material {
 		}
 	}
 	
-	public float calculatePerlinColor(Vec3 point) {
+	public float calculatePerlin(Vec3 point) {
 		float result = 0;
 
 		for (int i = (int)Math.floor(point.x); i <= (int)(Math.floor(point.x) + 1); i++) {
 			for (int j = (int)Math.floor(point.y); j <= (int)(Math.floor(point.y) + 1); j++) {
 				for (int k = (int)Math.floor(point.z); k <= (int)(Math.floor(point.z) + 1); k++) {
-					//result += calculatePerlinValue(point.x - i, point.y - j, point.z - k);
 					Vec3 uvw = new Vec3(point.x - i, point.y - j, point.z - k);
 					result += calculateCubicWeight(point.x - i) * calculateCubicWeight(point.y - j) * calculateCubicWeight(point.z - k) * (getRandomUnitVector(i, j, k).dot(uvw));
 				}
@@ -88,9 +87,8 @@ public class Material {
 	}
 
 	private float calculateCubicWeight(float t) {
-		if (t < 1) {
-			t = Math.abs(t);
-			return (float)(2 * Math.pow(t, 3) - 3 * Math.pow(t, 2) + 1);
+		if (Math.abs(t) < 1) {
+			return (float)(2 * Math.pow(Math.abs(t), 3) - 3 * Math.pow(Math.abs(t), 2) + 1);
 		}
 		return 0;
 	}
