@@ -1,0 +1,230 @@
+/*
+ * Programming assignment 2, Graphics 2009/2010
+ * example scene: planes, spheres, triangles,
+ * perlin noise, uv-mapping
+ *
+ */
+
+// some basic settings
+width	700
+height	700
+maxReflectionDepth 6
+gamma 1.0
+
+
+
+
+// triangle with picture of a graphics researcher
+triangle {
+	p1 < -51, 10, -40 >
+	u1 -0.5
+	v1 0.5
+
+	p2 <  -30, 20, -60 >
+	u2 1.0
+	v2 1.0
+
+	p3 <   -20, -30, -50 >
+	u3 1.0
+	v3 0.0
+
+	material {
+                // observe that "color" influences the final color,
+                // even with texturing
+		color < 1,1,1 >
+		texture bilinear monsters.jpg
+		ambient 0.5
+	}
+}
+
+// triangle with pictures
+//triangle {
+//	p1 < -16, -24, -35 >
+//	u1 -0.5
+//	v1 0.5
+//
+//	p2 <  -28, -20, -32 >
+//	u2 1.5
+//	v2 1.5
+//
+//	p3<   -28, -30, -35 >
+//	u3 1.5
+//	v3 -1.5
+//
+//	material {               
+//		color < 1,1,1 >
+//		texture bilinear cm.jpg
+//		ambient 0.8
+//		diffuse 0.5
+//	}
+//}
+
+
+// ground plane
+plane {
+	normal < 0, 1, 0 >
+	offset 30
+
+	material {
+		perlin < 0.2, 0.2, 0.2 > < 1.5, 1.5, 1.5 >
+	}
+
+}
+
+
+// left wall with birds
+plane {
+	normal < 1, 0, 0 >
+	offset 51
+
+	//uDirection < 0, 0.02, 0.02 >
+	uDirection < 0.0, 0.0, -0.02 >
+	material {
+		texture bilinear bird-seamless.jpg
+		ambient 0.5
+	}
+
+}
+
+
+// back wall with mouse
+plane {
+	normal < 0, 0, 1 >
+	offset 150
+	uDirection < 0.009, 0, 0 >
+
+	material {
+		texture bilinear mouse-seamless.jpg
+		color < 1, 1, 1 >
+	}
+
+}
+
+
+//  wall behind camera
+plane {
+	normal < 0, 0, -1 >
+	offset 120
+	uDirection < -0.005, 0, 0 >
+
+	material {
+		texture nearest robbysaskiatile.jpg
+		color < 1, 1, 1 >
+	}
+
+}
+
+
+// sphere with campus texture map
+sphere {
+
+	origin	< 46, 15, -105 >
+	radius	20
+	
+	material {
+		ambient 0.5
+		diffuse 1
+		texture bilinear campus.jpg
+		specular 0.5
+		specularPower 10
+	}
+
+}
+
+
+// sphere with globe texture
+sphere {
+
+	origin	< 0, -5, -60 >
+	radius	20
+
+	material {
+		ambient 0.5
+		diffuse 1
+		texture bilinear earth.png
+		specular 0.2
+		specularPower 10
+
+	}
+
+}
+
+// sphere with book cover texture 
+sphere {
+
+	origin	< 20, -20, -40>
+	radius	10
+
+	material {
+		ambient 0.5
+		diffuse 0.5
+		texture bilinear Ball.bmp
+		specular 0.7
+		specularPower 500
+	}
+
+}
+
+// sphere with debug texture map
+//sphere {
+//
+//	origin	< 10, -25, -50 >
+//	radius	5
+//
+//	material {
+//		texture debug
+//		color < 1, 1, 1 >
+//	}
+//
+//}
+
+// sphere with  grid texture 
+sphere {
+
+	origin	< -5, -20, -30 >
+	radius	5
+
+	material {
+		ambient 0.5
+		diffuse 0.7
+		texture bilinear grid100x100.jpg		
+		specular 0.8
+		specularPower 300
+		
+	}
+
+}
+
+
+
+// metal sphere
+sphere {
+
+	origin	< 6, 45, -85 >
+	radius	25
+
+	material {
+		ambient 0
+		diffuse 0
+		specular 1
+		specularPower 1000
+		reflectance 0.9
+	}
+
+}
+
+
+// light in front
+light {
+	location <40, 40, 0>
+	color <1,1,1>
+	intensity 1
+	}
+
+
+// light in the back
+light {
+	location <-10, 40, -80>
+	color <0.8, 0.2, 0.2>
+	intensity 0.0
+}
